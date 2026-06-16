@@ -312,6 +312,8 @@ class _HomePageState extends State<HomePage> {
     final revenueCtrl = TextEditingController(text: product?['revenue']?.toString() ?? '');
     final logisticsCtrl = TextEditingController(text: product?['logistics'] ?? '');
     final notesCtrl = TextEditingController(text: product?['notes'] ?? '');
+    final pickupFeeCtrl = TextEditingController(text: product?['pickup_fee']?.toString() ?? '');
+    final inlandFeeCtrl = TextEditingController(text: product?['inland_fee']?.toString() ?? '');
     final arrivalDateCtrl = TextEditingController(text: product?['arrival_date'] ?? '');
     final shipDateCtrl = TextEditingController(text: product?['ship_date'] ?? '');
     final trackingCtrl = TextEditingController(text: product?['tracking_no'] ?? '');
@@ -392,6 +394,12 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(width: 8),
                       Expanded(child: _field('备注', notesCtrl)),
                     ]),
+                    const SizedBox(height: 4),
+                    Row(children: [
+                      Expanded(child: _field('提货费', pickupFeeCtrl, num: true)),
+                      const SizedBox(width: 8),
+                      Expanded(child: _field('内陆费', inlandFeeCtrl, num: true)),
+                    ]),
                     const SizedBox(height: 16),
                     Row(children: [
                       if (!isNew) Expanded(
@@ -431,6 +439,8 @@ class _HomePageState extends State<HomePage> {
                               'width': double.tryParse(widthCtrl.text),
                               'height': double.tryParse(heightCtrl.text),
                               'weight': double.tryParse(weightCtrl.text),
+                              'pickup_fee': double.tryParse(pickupFeeCtrl.text) ?? 0,
+                              'inland_fee': double.tryParse(inlandFeeCtrl.text) ?? 0,
                             };
                             Navigator.pop(ctx);
                             if (isNew) {
@@ -1052,7 +1062,7 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // 左侧图片（缩小到80x100）
-                        if ((p['image'] as String).isNotEmpty)
+                        if ((p['image'] as String?)?.isNotEmpty == true)
                           Padding(
                             padding: const EdgeInsets.only(right: 10),
                             child: ClipRRect(
