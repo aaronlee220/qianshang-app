@@ -678,6 +678,37 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<void> _pickAlbumPhoto(int productId) async {
+    pickFromGallery((bytes) async {
+      try {
+        final uri = Uri.parse('$_baseUrl/upload');
+        final request = http.MultipartRequest('POST', uri);
+        request.files.add(http.MultipartFile.fromBytes('file', bytes, filename: 'photo.jpg'));
+        final streamedResp = await request.send();
+        final resp = await http.Response.fromStream(streamedResp);
+        final data = json.decode(resp.body);
+        final filename = data['filename'];
+        await http.put(
+          Uri.parse('$_baseUrl/products/$productId'),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({'real_image': filename}),
+        );
+        _loadProducts();
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('🖼️ 相册图片已保存'), duration: Duration(seconds: 1)),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('上传失败: $e')),
+          );
+        }
+      }
+    });
+  }
+
   Future<void> _importCsv() async {
     pickAndReadFile('.xlsx,.csv', (bytes) async {
       try {
@@ -1172,9 +1203,11 @@ class _HomePageState extends State<HomePage> {
                                   // 物流
                                   if ((p['logistics'] as String).isNotEmpty)
                                     _chip(Icons.local_shipping, p['logistics']),
-                                  // 拍照
+                                  // 拍照/相册
                                   _smallBtn(Icons.camera_alt, '拍照',
                                     () => _takeRealPhoto(p['id']), Colors.grey.shade600),
+                                  _smallBtn(Icons.photo_library, '相册',
+                                    () => _pickAlbumPhoto(p['id']), Colors.grey.shade600),
                                   // 备注
                                   if ((p['notes'] as String).isNotEmpty)
                                     _chip(Icons.note, p['notes']),
