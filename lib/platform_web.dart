@@ -32,3 +32,7 @@ void pickAndReadFile(String accept, FileCallback onLoaded) {
 void takePhoto(FileCallback onLoaded) {
   pickAndReadFile('image/*', onLoaded);
 }
+
+void pickFromGallery(FileCallback onLoaded) {
+  pickAndReadFile('image/*', onLoaded);
+}
