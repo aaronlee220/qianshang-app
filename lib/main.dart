@@ -289,7 +289,7 @@ class _HomePageState extends State<HomePage> {
       markerDates: markerDates,
       markerColor: markerColor,
       initialDay: markerDates.isNotEmpty
-          ? DateTime.tryParse(markerDates.first) ?? DateTime.now()
+          ? DateTime.tryParse(markerDates.reduce((a, b) => a.compareTo(b) > 0 ? a : b)) ?? DateTime.now()
           : DateTime.now(),
     );
     if (result != null) {
@@ -1146,10 +1146,10 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                               const SizedBox(height: 1),
-                              // 第二行：客户 · 国家
+                              // 第二行：客户 · 国家（加粗放大）
                               Text(
                                 '${p['customer']}${(p['customer'] as String).isNotEmpty && (p['country'] as String).isNotEmpty ? ' · ' : ''}${p['country']}',
-                                style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                                style: TextStyle(color: Colors.grey.shade800, fontSize: 14, fontWeight: FontWeight.bold),
                                 maxLines: 1, overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(height: 2),
@@ -1184,6 +1184,20 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                 ],
                               ),
+                              // 第五行：尺寸 + 重量
+                              if (((p['length'] as num?)?.toDouble() ?? 0) > 0 || ((p['weight'] as num?)?.toDouble() ?? 0) > 0)
+                                Row(
+                                  children: [
+                                    if (((p['length'] as num?)?.toDouble() ?? 0) > 0)
+                                      Text('${p['length']}×${p['width']}×${p['height']}cm',
+                                        style: TextStyle(fontSize: 11, color: Colors.grey.shade500)),
+                                    if (((p['length'] as num?)?.toDouble() ?? 0) > 0 && ((p['weight'] as num?)?.toDouble() ?? 0) > 0)
+                                      Text('  ·  ', style: TextStyle(fontSize: 11, color: Colors.grey.shade300)),
+                                    if (((p['weight'] as num?)?.toDouble() ?? 0) > 0)
+                                      Text('${p['weight']}kg',
+                                        style: TextStyle(fontSize: 11, color: Colors.grey.shade500)),
+                                  ],
+                                ),
                               const SizedBox(height: 4),
                               // 按钮行：发货 + 物流 + 拍照 + 备注
                               Wrap(
