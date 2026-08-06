@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:http/http.dart' as http;
@@ -44,7 +45,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final String _baseUrl = 'http://217.142.129.229:8800';
-  final String _imgUrl = 'http://217.142.129.229:8801';
+  final String _imgUrl = 'http://217.142.129.229:8800';
 
   int _tabIndex = 0;
   String _searchQuery = '';
@@ -755,6 +756,15 @@ class _HomePageState extends State<HomePage> {
             onPressed: () => openUrl('$_baseUrl/template'),
             tooltip: '下载模板',
           ),
+          if (kIsWeb)
+            TextButton.icon(
+              onPressed: _importCsv,
+              icon: const Icon(Icons.upload_file, size: 20),
+              label: const Text('批量导入'),
+              style: TextButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.onInverseSurface,
+              ),
+            ),
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _loadProducts,
