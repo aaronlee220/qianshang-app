@@ -1149,7 +1149,7 @@ class _HomePageState extends State<HomePage> {
                                       maxLines: 1, overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  if (p['pieces'] > 0 || p['pack_qty'] > 0 || p['total_qty'] > 0)
+                                  if ((p['pieces'] ?? 0) > 0 || (p['pack_qty'] ?? 0) > 0 || (p['total_qty'] ?? 0) > 0)
                                     Text('${p['pieces']}/${p['pack_qty']}/${p['total_qty']}件',
                                       style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
                                     ),
@@ -1164,15 +1164,15 @@ class _HomePageState extends State<HomePage> {
                               ),
                               const SizedBox(height: 2),
                               // 第三行：单价 + 总价（按国家显示货币）
-                              if (p['unit_price'] > 0 || p['revenue'] > 0)
+                              if ((p['unit_price'] ?? 0) > 0 || (p['revenue'] ?? 0) > 0)
                                 Row(
                                   children: [
-                                    if (p['unit_price'] > 0)
+                                    if ((p['unit_price'] ?? 0) > 0)
                                       Text('${_currency(p['country'] ?? '')}${p['unit_price']}',
                                         style: TextStyle(fontSize: 12, color: Colors.grey.shade700)),
-                                    if (p['unit_price'] > 0 && p['revenue'] > 0)
+                                    if ((p['unit_price'] ?? 0) > 0 && (p['revenue'] ?? 0) > 0)
                                       Text(' · ', style: TextStyle(fontSize: 12, color: Colors.grey.shade400)),
-                                    if (p['revenue'] > 0)
+                                    if ((p['revenue'] ?? 0) > 0)
                                       Text('${_currency(p['country'] ?? '')}${p['revenue']}',
                                         style: TextStyle(fontSize: 12, color: Colors.green.shade600, fontWeight: FontWeight.w500)),
                                   ],
@@ -1180,12 +1180,12 @@ class _HomePageState extends State<HomePage> {
                               // 第四行：下单日期 + 单号
                               Row(
                                 children: [
-                                  if ((p['order_date'] as String).isNotEmpty)
-                                    Text(p['order_date'],
+                                  if (((p['order_date'] as String?) ?? '').isNotEmpty)
+                                    Text(p['order_date'] ?? '',
                                       style: TextStyle(fontSize: 11, color: Colors.grey.shade500)),
                                   if ((p['order_date'] as String).isNotEmpty && (p['tracking_no'] as String).isNotEmpty)
                                     Text('  ', style: TextStyle(fontSize: 11, color: Colors.grey.shade300)),
-                                  if ((p['tracking_no'] as String).isNotEmpty)
+                                  if (((p['tracking_no'] as String?) ?? '').isNotEmpty)
                                     Expanded(
                                       child: Text('单:${p['tracking_no']}',
                                         style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
@@ -1215,17 +1215,17 @@ class _HomePageState extends State<HomePage> {
                                 runSpacing: 2,
                                 children: [
                                   // 发货/取消发货
-                                  if ((p['ship_date'] as String?) == null || (p['ship_date'] as String).isEmpty)
+                                  if (((p['ship_date'] as String?) ?? '').isEmpty)
                                     _smallBtn(Icons.check_circle_outline, '发货',
                                       () => _markShipped(p['id']), Colors.grey.shade600),
-                                  if ((p['ship_date'] as String?) != null && (p['ship_date'] as String).isNotEmpty)
+                                  if (((p['ship_date'] as String?) ?? '').isNotEmpty)
                                     _smallBtn(Icons.undo, '取消',
                                       () => _cancelShipped(p['id']), Colors.orange.shade600),
                                   // 已出货标签
-                                  if ((p['ship_date'] as String?) != null && (p['ship_date'] as String).isNotEmpty)
+                                  if (((p['ship_date'] as String?) ?? '').isNotEmpty)
                                     _chip(Icons.check_circle, '已出货 ${p['ship_date']}', color: Colors.blue),
                                   // 物流
-                                  if ((p['logistics'] as String).isNotEmpty)
+                                  if (((p['logistics'] as String?) ?? '').isNotEmpty)
                                     _chip(Icons.local_shipping, p['logistics']),
                                   // 拍照/相册
                                   _smallBtn(Icons.camera_alt, '拍照',
@@ -1233,7 +1233,7 @@ class _HomePageState extends State<HomePage> {
                                   _smallBtn(Icons.photo_library, '相册',
                                     () => _pickAlbumPhoto(p['id']), Colors.grey.shade600),
                                   // 备注
-                                  if ((p['notes'] as String).isNotEmpty)
+                                  if (((p['notes'] as String?) ?? '').isNotEmpty)
                                     _chip(Icons.note, p['notes']),
                                 ],
                               ),
