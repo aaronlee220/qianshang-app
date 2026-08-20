@@ -44,8 +44,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final String _baseUrl = 'http://154.51.40.17:8803';
-  final String _imgUrl = 'http://154.51.40.17:8803';
+  final String _baseUrl = 'http://154.51.40.17/api';
+  final String _imgUrl = 'http://154.51.40.17/api';
 
   int _tabIndex = 0;
   String _searchQuery = '';
