@@ -1090,6 +1090,7 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, i) {
           final p = items[i];
           return Card(
+            color: Colors.white,
             margin: const EdgeInsets.only(bottom: 8),
             child: InkWell(
               borderRadius: BorderRadius.circular(12),
