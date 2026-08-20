@@ -1145,12 +1145,12 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                    child: Text(p['name'] as String,
+                                    child: Text(p['name'] ?? '',
                                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                                       maxLines: 1, overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  if ((p['pieces'] ?? 0) > 0 || (p['pack_qty'] ?? 0) > 0 || (p['total_qty'] ?? 0) > 0)
+                                  if ((num.tryParse(p['pieces']?.toString() ?? '')?.toInt() ?? 0) > 0 || (num.tryParse(p['pack_qty']?.toString() ?? '')?.toInt() ?? 0) > 0 || (num.tryParse(p['total_qty']?.toString() ?? '')?.toInt() ?? 0) > 0)
                                     Text('${p['pieces']}/${p['pack_qty']}/${p['total_qty']}件',
                                       style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
                                     ),
@@ -1159,21 +1159,21 @@ class _HomePageState extends State<HomePage> {
                               const SizedBox(height: 1),
                               // 第二行：客户 · 国家（加粗放大）
                               Text(
-                                '${p['customer']}${(p['customer'] as String).isNotEmpty && (p['country'] as String).isNotEmpty ? ' · ' : ''}${p['country']}',
+                                '${p["customer"] ?? ""}'${((p["customer"] as String?) ?? "").isNotEmpty && ((p["country"] as String?) ?? "").isNotEmpty ? ' · ' : ''}${p["country"] ?? ""}'
                                 style: TextStyle(color: Colors.grey.shade800, fontSize: 14, fontWeight: FontWeight.bold),
                                 maxLines: 1, overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(height: 2),
                               // 第三行：单价 + 总价（按国家显示货币）
-                              if ((p['unit_price'] ?? 0) > 0 || (p['revenue'] ?? 0) > 0)
+                              if ((num.tryParse(p['unit_price']?.toString() ?? '')?.toDouble() ?? 0) > 0 || (num.tryParse(p['revenue']?.toString() ?? '')?.toDouble() ?? 0) > 0)
                                 Row(
                                   children: [
-                                    if ((p['unit_price'] ?? 0) > 0)
+                                    if ((num.tryParse(p['unit_price']?.toString() ?? '')?.toDouble() ?? 0) > 0)
                                       Text('${_currency(p['country'] ?? '')}${p['unit_price']}',
                                         style: TextStyle(fontSize: 12, color: Colors.grey.shade700)),
-                                    if ((p['unit_price'] ?? 0) > 0 && (p['revenue'] ?? 0) > 0)
+                                    if ((num.tryParse(p['unit_price']?.toString() ?? '')?.toDouble() ?? 0) > 0 && (num.tryParse(p['revenue']?.toString() ?? '')?.toDouble() ?? 0) > 0)
                                       Text(' · ', style: TextStyle(fontSize: 12, color: Colors.grey.shade400)),
-                                    if ((p['revenue'] ?? 0) > 0)
+                                    if ((num.tryParse(p['revenue']?.toString() ?? '')?.toDouble() ?? 0) > 0)
                                       Text('${_currency(p['country'] ?? '')}${p['revenue']}',
                                         style: TextStyle(fontSize: 12, color: Colors.green.shade600, fontWeight: FontWeight.w500)),
                                   ],
@@ -1184,7 +1184,7 @@ class _HomePageState extends State<HomePage> {
                                   if (((p['order_date'] as String?) ?? '').isNotEmpty)
                                     Text(p['order_date'] ?? '',
                                       style: TextStyle(fontSize: 11, color: Colors.grey.shade500)),
-                                  if ((p['order_date'] as String).isNotEmpty && (p['tracking_no'] as String).isNotEmpty)
+                                  if (((p['order_date'] as String?) ?? '').isNotEmpty && ((p['tracking_no'] as String?) ?? '').isNotEmpty)
                                     Text('  ', style: TextStyle(fontSize: 11, color: Colors.grey.shade300)),
                                   if (((p['tracking_no'] as String?) ?? '').isNotEmpty)
                                     Expanded(
@@ -1196,15 +1196,15 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                               // 第五行：尺寸 + 重量
-                              if (((p['length'] as num?)?.toDouble() ?? 0) > 0 || ((p['weight'] as num?)?.toDouble() ?? 0) > 0)
+                              if (((num.tryParse(p['length']?.toString() ?? '')?.toDouble() ?? 0)) > 0 || ((num.tryParse(p['weight']?.toString() ?? '')?.toDouble() ?? 0)) > 0)
                                 Row(
                                   children: [
-                                    if (((p['length'] as num?)?.toDouble() ?? 0) > 0)
+                                    if (((num.tryParse(p['length']?.toString() ?? '')?.toDouble() ?? 0)) > 0)
                                       Text('${p['length']}×${p['width']}×${p['height']}cm',
                                         style: TextStyle(fontSize: 11, color: Colors.grey.shade500)),
-                                    if (((p['length'] as num?)?.toDouble() ?? 0) > 0 && ((p['weight'] as num?)?.toDouble() ?? 0) > 0)
+                                    if (((num.tryParse(p['length']?.toString() ?? '')?.toDouble() ?? 0)) > 0 && ((num.tryParse(p['weight']?.toString() ?? '')?.toDouble() ?? 0)) > 0)
                                       Text('  ·  ', style: TextStyle(fontSize: 11, color: Colors.grey.shade300)),
-                                    if (((p['weight'] as num?)?.toDouble() ?? 0) > 0)
+                                    if (((num.tryParse(p['weight']?.toString() ?? '')?.toDouble() ?? 0)) > 0)
                                       Text('${p['weight']}kg',
                                         style: TextStyle(fontSize: 11, color: Colors.grey.shade500)),
                                   ],
@@ -1243,7 +1243,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         // 实物图（最右侧）
                         if ((p['real_image'] as String?) != null &&
-                            (p['real_image'] as String).isNotEmpty)
+                            ((p['real_image'] as String?) ?? '').isNotEmpty)
                           Padding(
                             padding: const EdgeInsets.only(left: 8),
                             child: ClipRRect(
