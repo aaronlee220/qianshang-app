@@ -1159,7 +1159,7 @@ class _HomePageState extends State<HomePage> {
                               const SizedBox(height: 1),
                               // 第二行：客户 · 国家（加粗放大）
                               Text(
-                                '${p["customer"] ?? ""}'${((p["customer"] as String?) ?? "").isNotEmpty && ((p["country"] as String?) ?? "").isNotEmpty ? ' · ' : ''}${p["country"] ?? ""}'
+                                '${p['customer'] ?? ''}${((p['customer'] as String?) ?? '').isNotEmpty && ((p['country'] as String?) ?? '').isNotEmpty ? ' · ' : ''}${p['country'] ?? ''}'
                                 style: TextStyle(color: Colors.grey.shade800, fontSize: 14, fontWeight: FontWeight.bold),
                                 maxLines: 1, overflow: TextOverflow.ellipsis,
                               ),
